@@ -22,9 +22,12 @@ io.on("connection", (socket) => {
 
   socket.on("createMessage", (msg) => {
     console.log("Message received by server", msg);
+    io.emit("newMessage", {
+      from: msg.from,
+      text : msg.text,
+      createdAt : new Date().getTime()
+    });
   });
-
-  socket.emit("newMessage", {from:'SahilGoel', text:'am good!!'});
 });
 server.listen(port, () => {
   console.log(`Starting application on port ${port}`);
