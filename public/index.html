@@ -2,20 +2,27 @@
 <html>
   <head>
       <meta charset="utf-8">
+      <link rel="stylesheet" href="/css/styles.css" >
       <title>My First Chat app</title>
   </head>
-  <body>
-    <p>
-      Welcome to first node-app
-    </p>
-    <ol id="messages"></ol>
+  <body class="chat">
+    <div class="chat__sidebar">
+        <h3>People</h3>
+        <div id="users"></div>
+    </div>
 
-    <ol id="locationMessages"></ol>
-    <form id="message-form">
-        <input type="text" id="messageField"/>
-        <button>Send</button>
-    </form>
-    <button id="sendLocationButton">Send Location</button>
+    <div class="chat__main">
+      <ol id="messages" class="chat__messages"></ol>
+      <ol id="locationMessages" class="chat__messages"></ol>
+      <div class="chat__footer">
+        <form id="message-form">
+          <input type="text" id="messageField" placeholder="Message" autofocus autocomplete="off"/>
+          <button>Send</button>
+        </form>
+          <button id="sendLocationButton">Send location</button>
+      </div>
+
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script  src="/js/libs/jquery-3.2.1.min.js"></script>
     <script  src="/js/index.js"></script>

@@ -36,22 +36,26 @@ socket.emit("createMessage", {
 
 jQuery('#message-form').on('submit', function(e) {
   e.preventDefault();
+  var messageField = jQuery('#messageField');
   socket.emit("createMessage", {
     from:'SomeUser',
-    text: jQuery('#messageField').val()
-  }, function(data) {
-    console.log("Got it", data);
+    text: messageField.val()
+  }, function() {
+    messageField.val('');
   });
 
 });
 
 var sendLocationButton = jQuery("#sendLocationButton");
 sendLocationButton.on("click", function() {
+
   if (!navigator.geolocation) {
     alert("Geolocation service is not supported by your browser");
     return;
   }
+  sendLocationButton.attr("disabled", "disabled").text('Sending location...');
   navigator.geolocation.getCurrentPosition(function(position) {
+    sendLocationButton.removeAttr("disabled").text('Send location');
     socket.emit("locationMessage", {
       latitude : position.coords.latitude,
       longitude : position.coords.longitude
@@ -60,5 +64,6 @@ sendLocationButton.on("click", function() {
     });
   }, function() {
     alert("Unable to fetch location");
+    sendLocationButton.removeAttr("disabled").text('Send location');
   });
 });
