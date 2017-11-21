@@ -23,9 +23,10 @@ io.on("connection", (socket) => {
     console.log("User Disconnected");
   });
 
-  socket.on("createMessage", (msg) => {
+  socket.on("createMessage", (msg, callback) => {
     console.log("Message received by server", msg);
     io.emit("newMessage", generateMessage(msg.from, msg.text));
+    callback('Acknowledged!');
   });
 });
 server.listen(port, () => {

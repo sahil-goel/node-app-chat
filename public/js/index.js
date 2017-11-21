@@ -11,4 +11,26 @@ socket.on("disconnect", () => {
 
 socket.on("newMessage", (msg) => {
   console.log("New Message received", msg);
+  var li = jQuery('<li></li>');
+  li.text(`${msg.from} - ${msg.text}`);
+
+  jQuery('#messages').append(li);
+});
+
+socket.emit("createMessage", {
+  from:'Sahil',
+  text: 'Hi'
+}, function(data) {
+  console.log("Got it", data);
+});
+
+jQuery('#message-form').on('submit', function(e) {
+  e.preventDefault();
+  socket.emit("createMessage", {
+    from:'SomeUser',
+    text: jQuery('#messageField').val()
+  }, function(data) {
+    console.log("Got it", data);
+  });
+
 });
