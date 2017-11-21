@@ -3,7 +3,7 @@ const express = require("express");
 const http = require("http");
 const socketIO = require("socket.io");
 
-const {generateMessage} = require("./utils/messages");
+const {generateMessage, generateLocationMessage} = require("./utils/messages");
 
 var publicPath = path.join(__dirname, "../public");
 const app = express();
@@ -27,6 +27,12 @@ io.on("connection", (socket) => {
     console.log("Message received by server", msg);
     io.emit("newMessage", generateMessage(msg.from, msg.text));
     callback('Acknowledged!');
+  });
+
+  socket.on("locationMessage", (msg, callback) => {
+    console.log("Message received by server", msg);
+    io.emit("locationMessage", generateLocationMessage('Admin', msg.latitude, msg.longitude));
+    callback(`Location longitude ${msg.longitude}, latitude ${msg.latitude}`);
   });
 });
 server.listen(port, () => {
