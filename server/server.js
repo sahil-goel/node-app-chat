@@ -43,15 +43,18 @@ io.on("connection", (socket) => {
   });
 
   socket.on("createMessage", (msg, callback) => {
-    console.log("Message received by server", msg);
-    io.emit("newMessage", generateMessage(msg.from, msg.text));
+    var user = users.getUser(socket.id);
+    if (user && isRealString(msg.text)) {
+      io.to(user.room).emit("newMessage", generateMessage(user.name, msg.text));
+    }
     callback();
   });
 
   socket.on("locationMessage", (msg, callback) => {
-    console.log("Message received by server", msg);
-    io.emit("locationMessage", generateLocationMessage('Admin', msg.latitude, msg.longitude));
-    callback(`Location longitude ${msg.longitude}, latitude ${msg.latitude}`);
+    var user = users.getUser(socket.id);
+    if (user) {
+      io.to(user.room).emit("locationMessage", generateLocationMessage(user.name, msg.latitude, msg.longitude));
+    }
   });
 });
 server.listen(port, () => {

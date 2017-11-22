@@ -69,7 +69,6 @@ jQuery('#message-form').on('submit', function(e) {
   e.preventDefault();
   var messageField = jQuery('#messageField');
   socket.emit("createMessage", {
-    from:'SomeUser',
     text: messageField.val()
   }, function() {
     messageField.val('');
@@ -90,8 +89,6 @@ sendLocationButton.on("click", function() {
     socket.emit("locationMessage", {
       latitude : position.coords.latitude,
       longitude : position.coords.longitude
-    }, function(data) {
-      console.log("Server Acknowledged location message", data);
     });
   }, function() {
     alert("Unable to fetch location");
