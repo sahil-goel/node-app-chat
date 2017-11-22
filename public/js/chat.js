@@ -15,8 +15,27 @@ function scrollToBottom() {
 
 socket.on("connect", () => {
   console.log("New Client Connected");
+  var params = jQuery.deparam(window.location.search);
 
+  socket.emit('join', params, function(err) {
+    if (err) {
+      alert(err);
+      window.location.href= "/";
+    } else {
+      console.log("No error");
+    }
+  });
 });
+
+socket.on("updateUsersList", (users) => {
+  console.log(users);
+  var ol = jQuery("<ol></ol>");
+  users.forEach(function(user) {
+    ol.append(jQuery("<li></li>").text(user));
+  });
+  jQuery("#users").html(ol);
+});
+
 
 socket.on("disconnect", () => {
   console.log("Client Disconnected");
@@ -44,13 +63,6 @@ socket.on("locationMessage", (msg) => {
   });
   jQuery('#messages').append(renderedMessage);
   scrollToBottom();
-});
-
-socket.emit("createMessage", {
-  from:'Sahil',
-  text: 'Hi'
-}, function(data) {
-  console.log("Got it", data);
 });
 
 jQuery('#message-form').on('submit', function(e) {
